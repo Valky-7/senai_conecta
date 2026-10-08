@@ -1,6 +1,11 @@
+# Liga o motor de reescrita de URLs do Apache
 RewriteEngine On
 
+# Condição: só continua se o que foi pedido NÃO for um arquivo existente (ex.: uploads/foto.jpg)
 RewriteCond %{REQUEST_FILENAME} !-f
+# Condição: e também NÃO for uma pasta existente
 RewriteCond %{REQUEST_FILENAME} !-d
 
+# Regra: qualquer outra URL (ex.: /login, /publicacoes) é enviada para o index.php
+# QSA mantém os parâmetros da URL; L diz que é a última regra
 RewriteRule ^(.*)$ index.php [QSA,L]

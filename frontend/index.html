@@ -1,81 +1,96 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENAI Conecta</title>
-    <link rel="stylesheet" href="css/style.css">
+<!DOCTYPE html> <!-- Diz ao navegador que é um documento HTML5 -->
+<html lang="pt-BR"> <!-- Raiz da página; idioma português do Brasil -->
+<head> <!-- Informações da página que NÃO aparecem na tela -->
+    <meta charset="UTF-8"> <!-- Permite acentos e caracteres especiais -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajusta a página para celular -->
+    <title>SENAI Conecta</title> <!-- Título que aparece na aba do navegador -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Liga o arquivo de estilos (CSS) -->
 </head>
-<body>
+<body> <!-- Tudo que aparece na tela -->
+    <!-- ===== CABEÇALHO ===== -->
     <header class="header">
-        <div class="logo">SENAI CONECTA</div>
-        <div class="search-box">
+        <div class="logo">SENAI CONECTA</div> <!-- Nome do site -->
+        <div class="search-box"> <!-- Caixa de pesquisa -->
+            <!-- Campo onde digita o @username; o app.js abre o perfil ao apertar Enter -->
             <input type="text" id="searchInput" placeholder="Pesquisar @username...">
         </div>
         <div class="user-menu" id="userMenu">
-            <!-- Renderizado via JS conforme estado de autenticação -->
+            <!-- Renderizado via JS conforme estado de autenticação (botão Entrar ou @username + Sair) -->
         </div>
     </header>
 
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="container">
+        <!-- Formulário de publicar: começa escondido (hidden) e só aparece para o perfil "criador" -->
         <section id="createPostSection" class="card hidden">
-            <h3>Criar Publicação</h3>
-            <form id="postForm">
+            <h3>Criar Publicação</h3> <!-- Título do formulário -->
+            <form id="postForm"> <!-- O app.js escuta o envio deste formulário -->
+                <!-- Campo de texto da publicação; required = obrigatório -->
                 <textarea id="postText" placeholder="O que você está pensando?" required></textarea>
                 <div class="form-actions">
+                    <!-- Escolher imagem (accept="image/*" só aceita imagens) -->
                     <input type="file" id="postImage" accept="image/*">
+                    <!-- Botão que envia o formulário -->
                     <button type="submit" class="btn primary">Publicar</button>
                 </div>
             </form>
         </section>
 
+        <!-- Área do feed: o app.js coloca as publicações aqui dentro -->
         <section id="feed" class="feed-container">
             <!-- Feed renderizado dinamicamente -->
         </section>
     </main>
 
-    <!-- Modal de Autenticação -->
-    <div id="authModal" class="modal hidden">
-        <div class="modal-content">
-            <!-- Botao de fechar usando o icone fechar.svg (mesmo estilo do perfil) -->
+    <!-- ===== JANELA DE LOGIN / CADASTRO ===== -->
+    <div id="authModal" class="modal hidden"> <!-- Fundo escuro; começa escondida -->
+        <div class="modal-content"> <!-- Caixa branca no centro -->
+            <!-- Botão de fechar com o ícone fechar.svg (caminho relativo: sai de frontend e entra em backend/uploads) -->
             <button class="profile-close" onclick="closeAuthModal()">
                 <img src="../backend/uploads/fechar.svg" class="icon-close">
             </button>
-            <div class="tabs">
+            <div class="tabs"> <!-- Abas Login / Cadastrar -->
+                <!-- Aba Login (começa ativa); onclick troca de aba -->
                 <button id="tabLogin" class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <!-- Aba Cadastrar -->
                 <button id="tabRegister" class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
             </div>
 
+            <!-- Formulário de login -->
             <form id="loginForm" class="auth-form">
-                <input type="email" id="loginEmail" placeholder="E-mail" required>
-                <input type="password" id="loginSenha" placeholder="Senha" required>
-                <div id="loginError" class="error-msg hidden"></div>
-                <button type="submit" class="btn primary">Entrar</button>
+                <input type="email" id="loginEmail" placeholder="E-mail" required> <!-- Campo de e-mail -->
+                <input type="password" id="loginSenha" placeholder="Senha" required> <!-- Campo de senha (oculta o texto) -->
+                <div id="loginError" class="error-msg hidden"></div> <!-- Mensagem de erro do login -->
+                <button type="submit" class="btn primary">Entrar</button> <!-- Envia o login -->
             </form>
 
+            <!-- Formulário de cadastro (começa escondido) -->
             <form id="registerForm" class="auth-form hidden">
-                <input type="text" id="regNome" placeholder="Nome Completo" required>
-                <input type="text" id="regUsername" placeholder="Nome de usuário (@username)" required>
-                <input type="email" id="regEmail" placeholder="E-mail" required>
-                <input type="password" id="regSenha" placeholder="Senha" required>
-                <input type="file" id="regFoto" accept="image/*">
-                <div id="regError" class="error-msg hidden"></div>
-                <button type="submit" class="btn primary">Cadastrar</button>
+                <input type="text" id="regNome" placeholder="Nome Completo" required> <!-- Nome -->
+                <input type="text" id="regUsername" placeholder="Nome de usuário (@username)" required> <!-- Username -->
+                <input type="email" id="regEmail" placeholder="E-mail" required> <!-- E-mail -->
+                <input type="password" id="regSenha" placeholder="Senha" required> <!-- Senha -->
+                <input type="file" id="regFoto" accept="image/*"> <!-- Foto (opcional) -->
+                <div id="regError" class="error-msg hidden"></div> <!-- Mensagem de erro do cadastro -->
+                <button type="submit" class="btn primary">Cadastrar</button> <!-- Envia o cadastro -->
             </form>
         </div>
     </div>
 
-    <!-- Modal do Perfil (o conteudo e preenchido pelo JS) -->
-     <div id="profileModal" class="modal hidden">
+    <!-- ===== JANELA DO PERFIL ===== -->
+    <!-- O conteúdo (foto, nome, contagens...) é preenchido pelo JS na função openProfile -->
+    <div id="profileModal" class="modal hidden">
         <div class="modal-content profile-content" id="profileContent"></div>
-     </div>
+    </div>
 
+    <!-- ===== RODAPÉ ===== -->
     <footer class="footer">
-        <p>&copy; 2026-2027 SENAI Conecta</p>
+        <p>&copy; 2026-2027 SENAI Conecta</p> <!-- &copy; mostra o símbolo © -->
     </footer>
 
-    <script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/app.js"></script>
+    <!-- ===== SCRIPTS (a ORDEM importa: um usa funções do outro) ===== -->
+    <script src="js/api.js"></script> <!-- 1º: função apiFetch e endereço da API -->
+    <script src="js/auth.js"></script> <!-- 2º: login, cadastro e logout -->
+    <script src="js/app.js"></script> <!-- 3º: feed, curtir, publicar e perfil -->
 </body>
 </html>

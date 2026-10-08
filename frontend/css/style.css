@@ -1,61 +1,483 @@
-:root {
-    --primary: #0056b3;
-    --background: #f4f6f8;
-    --card: #ffffff;
-    --text: #333333;
-    --border: #e0e0e0;
-    --danger: #dc3545;
+/* ===== VARIÁVEIS DE COR (usadas com var(--nome) no resto do arquivo) ===== */
+:root { /* :root = a página inteira; as variáveis ficam disponíveis em todo lugar */
+    --primary: #0056b3; /* azul principal do site */
+    --primary-dark: #004494; /* azul mais escuro (usado ao passar o mouse nos botões) */
+    --background: #f4f6f8; /* cinza bem claro do fundo da página */
+    --card: #ffffff; /* branco dos cartões */
+    --text: #333333; /* cinza escuro do texto */
+    --border: #e0e0e0; /* cinza claro das bordas */
+    --danger: #dc3545; /* vermelho (curtida, erros) */
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* sombra suave usada nos cartões */
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background-color: var(--background); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+/* ===== RESET: vale para TODOS os elementos (*) ===== */
+* {
+    box-sizing: border-box; /* padding e borda ficam dentro da largura do elemento */
+    margin: 0; /* tira a margem padrão do navegador */
+    padding: 0; /* tira o espaçamento interno padrão do navegador */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* fonte do site (usa a próxima se faltar) */
+}
 
+/* ===== CORPO DA PÁGINA ===== */
+body {
+    background-color: var(--background); /* cor de fundo da página */
+    color: var(--text); /* cor padrão do texto */
+    display: flex; /* organiza os filhos (header, main, footer) com flexbox */
+    flex-direction: column; /* coloca um embaixo do outro */
+    min-height: 100vh; /* altura mínima = tela inteira (empurra o rodapé para baixo) */
+}
+
+/* ===== CABEÇALHO (topo azul) ===== */
 .header {
-    background: var(--primary); color: white; padding: 1rem 2rem;
-    display: flex; justify-content: space-between; align-items: center;
+    background: var(--primary); /* fundo azul */
+    color: white; /* texto branco */
+    padding: 1rem 2rem; /* espaço interno: 1rem em cima/baixo e 2rem nos lados */
+    display: flex; /* itens lado a lado */
+    justify-content: space-between; /* espalha: logo na esquerda, menu na direita */
+    align-items: center; /* alinha tudo no meio na vertical */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* sombra embaixo para destacar o topo */
 }
-.search-box input { padding: 0.5rem 1rem; border-radius: 20px; border: none; width: 250px; }
 
-.container { max-width: 600px; margin: 2rem auto; flex: 1; width: 100%; padding: 0 1rem; }
-.card { background: var(--card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
-.post-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; padding: 1rem; }
-.post-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-.post-author { font-weight: bold; }
-.post-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 6px; margin: 0.5rem 0; }
-.post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+/* ===== LOGO DO SITE ===== */
+.logo {
+    font-weight: bold; /* texto em negrito */
+    letter-spacing: 1px; /* espaço entre as letras */
+}
 
-/* Botao de curtir: cinza quando nao curtiu, vermelho quando curtiu (o icone e branco) */
-.like-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #aaa; border: none; border-radius: 12px; padding: 0.2rem 0.7rem; cursor: pointer; font-size: 0.95rem; color: white; }
-.like-btn.liked { background: var(--danger); }
+/* ===== CAMPO DE PESQUISA ===== */
+.search-box input {
+    padding: 0.5rem 1rem; /* espaço interno do campo */
+    border-radius: 20px; /* cantos bem arredondados */
+    border: none; /* sem borda */
+    width: 250px; /* largura fixa */
+}
 
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-.modal.hidden, .hidden { display: none !important; }
-.modal-content { background: white; padding: 2rem; border-radius: 8px; width: 100%; max-width: 400px; position: relative; }
-.close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem; }
+/* ===== BOTÕES DENTRO DO CABEÇALHO (o fundo é azul, então precisam de cores próprias) ===== */
+.header .btn {
+    background: rgba(255, 255, 255, 0.15); /* branco quase transparente */
+    color: white; /* texto branco */
+}
 
-.auth-form { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
-.auth-form input { padding: 0.6rem; border: 1px solid var(--border); border-radius: 4px; }
-.btn { padding: 0.6rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-.btn.primary { background: var(--primary); color: white; }
-.error-msg { color: var(--danger); font-size: 0.85rem; }
+/* Botões do cabeçalho ao passar o mouse */
+.header .btn:hover {
+    background: rgba(255, 255, 255, 0.3); /* branco um pouco mais forte */
+}
 
-.footer { text-align: center; padding: 1rem; background: #e9ecef; border-top: 1px solid var(--border); }
+/* Botão "Entrar" do cabeçalho: branco para aparecer sobre o fundo azul */
+.header .btn.primary {
+    background: white; /* fundo branco */
+    color: var(--primary); /* texto azul */
+}
 
-/* ===== Perfil do usuario ===== */
-.clickable { cursor: pointer; }
-.clickable:hover { text-decoration: underline; }
+/* Botão "Entrar" ao passar o mouse */
+.header .btn.primary:hover {
+    background: #e9f1fb; /* azul bem clarinho */
+}
 
-.profile-content { max-height: 85vh; overflow-y: auto; }
-.profile-top { text-align: center; margin-bottom: 1rem; }
-.profile-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin-bottom: 0.5rem; }
+/* ===== ÁREA CENTRAL ===== */
+.container {
+    max-width: 600px; /* largura máxima do conteúdo */
+    margin: 2rem auto; /* 2rem em cima/baixo e centralizado nos lados (auto) */
+    flex: 1; /* ocupa o espaço que sobra (empurra o rodapé) */
+    width: 100%; /* usa toda a largura disponível até o máximo */
+    padding: 0 1rem; /* espaço interno só nos lados */
+}
 
-.profile-stats { display: flex; justify-content: space-around; margin-bottom: 1rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.profile-stats div { display: flex; flex-direction: column; align-items: center; }
-.profile-stats strong { font-size: 1.3rem; }
-.profile-stats span { font-size: 0.8rem; color: #777; }
+/* ===== CARTÃO GENÉRICO (ex.: Criar Publicação) ===== */
+.card {
+    background: var(--card); /* fundo branco */
+    padding: 1.2rem; /* espaço interno */
+    border-radius: 12px; /* cantos arredondados */
+    border: 1px solid var(--border); /* borda fina cinza */
+    box-shadow: var(--shadow); /* sombra suave */
+    margin-bottom: 1.5rem; /* espaço embaixo do cartão */
+}
 
-/* Os icones fechar.svg e curtir.svg sao brancos, entao precisam de fundo colorido */
-.profile-close { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border: none; border-radius: 50%; background: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.icon-close { width: 12px; height: 12px; }
-.like-count { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--danger); color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem; }
-.icon-like { width: 14px; height: 14px; }
+/* ===== TÍTULO DO CARTÃO "CRIAR PUBLICAÇÃO" ===== */
+.card h3 {
+    margin-bottom: 0.8rem; /* espaço entre o título e o formulário */
+}
+
+/* ===== CAMPO DE TEXTO DA NOVA PUBLICAÇÃO ===== */
+#postText {
+    width: 100%; /* ocupa toda a largura do cartão */
+    min-height: 90px; /* altura mínima da caixa */
+    padding: 0.8rem; /* espaço interno */
+    border: 1px solid var(--border); /* borda fina cinza */
+    border-radius: 8px; /* cantos arredondados */
+    resize: vertical; /* o usuário só pode aumentar a altura (não a largura) */
+    font-size: 1rem; /* tamanho do texto digitado */
+}
+
+/* ===== LINHA COM "ESCOLHER IMAGEM" E BOTÃO "PUBLICAR" ===== */
+.form-actions {
+    display: flex; /* itens lado a lado */
+    justify-content: space-between; /* escolher imagem na esquerda, Publicar na direita */
+    align-items: center; /* alinha no meio na vertical */
+    gap: 1rem; /* espaço entre os itens */
+    margin-top: 0.8rem; /* espaço em cima */
+}
+
+/* ===== CARTÃO DE PUBLICAÇÃO ===== */
+.post-card {
+    background: var(--card); /* fundo branco */
+    border: 1px solid var(--border); /* borda fina cinza */
+    border-radius: 12px; /* cantos arredondados */
+    box-shadow: var(--shadow); /* sombra suave */
+    margin-bottom: 1rem; /* espaço entre uma publicação e outra */
+    padding: 1.2rem; /* espaço interno */
+    transition: box-shadow 0.2s, transform 0.2s; /* anima a sombra e o movimento ao passar o mouse */
+}
+
+/* Cartão ao passar o mouse: sobe um pouquinho */
+.post-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* sombra mais forte */
+    transform: translateY(-2px); /* sobe 2px */
+}
+
+/* ===== TEXTO DA PUBLICAÇÃO ===== */
+.post-card p {
+    line-height: 1.5; /* mais espaço entre as linhas, fica mais fácil de ler */
+    margin: 0.5rem 0; /* espaço em cima e embaixo do texto */
+    word-break: break-word; /* quebra palavras muito grandes para não vazar do cartão */
+}
+
+/* ===== TOPO DA PUBLICAÇÃO (autor + botão Excluir) ===== */
+.post-header {
+    display: flex; /* itens lado a lado */
+    justify-content: space-between; /* autor na esquerda, Excluir na direita */
+    align-items: center; /* alinha no meio na vertical */
+    margin-bottom: 0.5rem; /* espaço embaixo */
+}
+
+/* ===== NOME DO AUTOR ===== */
+.post-author {
+    font-weight: bold; /* texto em negrito */
+    font-size: 1.05rem; /* um pouco maior que o texto normal */
+}
+
+/* ===== BOTÃO EXCLUIR (contorno vermelho, preenche ao passar o mouse) ===== */
+.post-header .btn {
+    background: transparent; /* sem fundo */
+    color: var(--danger); /* texto vermelho */
+    border: 1px solid var(--danger); /* contorno vermelho */
+    padding: 0.3rem 0.8rem; /* botão menor que o padrão */
+    font-size: 0.85rem; /* texto menor */
+}
+
+/* Excluir ao passar o mouse */
+.post-header .btn:hover {
+    background: var(--danger); /* fundo vermelho */
+    color: white; /* texto branco */
+}
+
+/* ===== IMAGEM DA PUBLICAÇÃO ===== */
+.post-image {
+    width: 100%; /* ocupa toda a largura do cartão */
+    max-height: 400px; /* altura máxima */
+    object-fit: cover; /* corta a imagem para preencher sem esticar */
+    border-radius: 8px; /* cantos arredondados */
+    margin: 0.5rem 0; /* espaço em cima e embaixo */
+}
+
+/* ===== RODAPÉ DA PUBLICAÇÃO (curtir + data) ===== */
+.post-actions {
+    display: flex; /* itens lado a lado */
+    justify-content: space-between; /* curtir na esquerda, data na direita */
+    align-items: center; /* alinha no meio na vertical */
+    margin-top: 0.8rem; /* espaço em cima */
+    padding-top: 0.8rem; /* espaço entre a linha e os itens */
+    border-top: 1px solid var(--border); /* linha fina separando do texto */
+}
+
+/* ===== BOTÃO DE CURTIR (o ícone curtir.svg é branco, por isso precisa de fundo) ===== */
+.like-btn {
+    display: inline-flex; /* ícone e número lado a lado, só do tamanho do conteúdo */
+    align-items: center; /* alinha ícone e número no meio */
+    gap: 0.4rem; /* espaço entre o ícone e o número */
+    background: #aaa; /* cinza quando NÃO curtiu */
+    border: none; /* sem borda */
+    border-radius: 12px; /* cantos arredondados (formato de pílula) */
+    padding: 0.3rem 0.8rem; /* espaço interno */
+    cursor: pointer; /* mãozinha ao passar o mouse */
+    font-size: 0.95rem; /* tamanho do número */
+    color: white; /* número branco */
+    transition: background 0.2s, transform 0.1s; /* anima a troca de cor e o clique */
+}
+
+/* Curtir ao passar o mouse */
+.like-btn:hover {
+    background: #888; /* cinza mais escuro */
+}
+
+/* Curtir enquanto está sendo clicado: encolhe um pouquinho */
+.like-btn:active {
+    transform: scale(0.92); /* 92% do tamanho normal */
+}
+
+/* ===== BOTÃO DE CURTIR QUANDO JÁ CURTIU (classe .liked adicionada pelo JS) ===== */
+.like-btn.liked {
+    background: var(--danger); /* fica vermelho */
+}
+
+/* Curtir (já curtido) ao passar o mouse */
+.like-btn.liked:hover {
+    background: #b52a37; /* vermelho mais escuro */
+}
+
+/* ===== JANELA (MODAL): fundo escuro que cobre a tela ===== */
+.modal {
+    position: fixed; /* fica fixa na tela, mesmo com rolagem */
+    top: 0; /* encostada no topo */
+    left: 0; /* encostada na esquerda */
+    width: 100%; /* largura da tela inteira */
+    height: 100%; /* altura da tela inteira */
+    background: rgba(0,0,0,0.5); /* preto com 50% de transparência */
+    backdrop-filter: blur(3px); /* desfoca levemente o que está atrás da janela */
+    display: flex; /* usa flexbox para centralizar o conteúdo */
+    justify-content: center; /* centraliza na horizontal */
+    align-items: center; /* centraliza na vertical */
+}
+
+/* ===== CLASSE QUE ESCONDE ELEMENTOS (o JS coloca e tira) ===== */
+.modal.hidden, .hidden {
+    display: none !important; /* some da tela; !important garante que vença as outras regras */
+}
+
+/* ===== CAIXA BRANCA DENTRO DA JANELA ===== */
+.modal-content {
+    background: white; /* fundo branco */
+    padding: 2rem; /* espaço interno */
+    border-radius: 16px; /* cantos bem arredondados */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* sombra forte para a janela "flutuar" */
+    width: 100%; /* usa a largura disponível... */
+    max-width: 400px; /* ...até 400px */
+    position: relative; /* permite posicionar o botão de fechar dentro dela */
+    animation: aparecer 0.2s ease; /* faz a janela aparecer suavemente */
+}
+
+/* ===== ANIMAÇÃO DE ENTRADA DA JANELA ===== */
+@keyframes aparecer {
+    from { /* começo da animação */
+        opacity: 0; /* totalmente transparente */
+        transform: translateY(-15px) scale(0.97); /* um pouco acima e menor */
+    }
+    to { /* fim da animação */
+        opacity: 1; /* totalmente visível */
+        transform: translateY(0) scale(1); /* posição e tamanho normais */
+    }
+}
+
+/* ===== BOTÃO DE FECHAR ANTIGO (X em texto; hoje o HTML usa o ícone, mas a regra foi mantida) ===== */
+.close-btn {
+    position: absolute; /* posicionado em relação à caixa branca (.modal-content) */
+    top: 10px; /* 10px abaixo do topo */
+    right: 15px; /* 15px da direita */
+    cursor: pointer; /* mãozinha ao passar o mouse */
+    font-size: 1.5rem; /* tamanho do X */
+}
+
+/* ===== ABAS "LOGIN" E "CADASTRAR" ===== */
+.tabs {
+    display: flex; /* abas lado a lado */
+    border-bottom: 2px solid var(--border); /* linha cinza embaixo das abas */
+    margin-top: 0.5rem; /* espaço em cima */
+}
+
+/* ===== CADA ABA ===== */
+.tab-btn {
+    flex: 1; /* cada aba ocupa metade da largura */
+    padding: 0.7rem; /* espaço interno */
+    background: none; /* sem fundo */
+    border: none; /* sem borda */
+    border-bottom: 3px solid transparent; /* linha de baixo invisível (aparece na aba ativa) */
+    margin-bottom: -2px; /* sobrepõe a linha cinza das abas */
+    font-size: 1rem; /* tamanho do texto */
+    font-weight: bold; /* texto em negrito */
+    color: #888; /* cinza (aba inativa) */
+    cursor: pointer; /* mãozinha ao passar o mouse */
+    transition: color 0.2s; /* anima a troca de cor */
+}
+
+/* Aba ao passar o mouse */
+.tab-btn:hover {
+    color: var(--primary); /* texto azul */
+}
+
+/* Aba selecionada (classe .active colocada pelo JS) */
+.tab-btn.active {
+    color: var(--primary); /* texto azul */
+    border-bottom-color: var(--primary); /* linha azul embaixo */
+}
+
+/* ===== FORMULÁRIOS DE LOGIN E CADASTRO ===== */
+.auth-form {
+    display: flex; /* organiza os campos com flexbox */
+    flex-direction: column; /* um campo embaixo do outro */
+    gap: 0.8rem; /* espaço entre os campos */
+    margin-top: 1.2rem; /* espaço em cima */
+}
+
+/* ===== CAMPOS DE TEXTO DOS FORMULÁRIOS ===== */
+.auth-form input {
+    padding: 0.7rem; /* espaço interno */
+    border: 1px solid var(--border); /* borda fina cinza */
+    border-radius: 8px; /* cantos arredondados */
+    font-size: 1rem; /* tamanho do texto digitado */
+}
+
+/* ===== CAMPO EM FOCO (quando o usuário clica para digitar) ===== */
+.auth-form input:focus, #postText:focus {
+    outline: none; /* tira o contorno padrão do navegador */
+    border-color: var(--primary); /* borda azul */
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15); /* brilho azul clarinho em volta */
+}
+
+/* ===== BOTÃO PADRÃO ===== */
+.btn {
+    padding: 0.6rem 1rem; /* espaço interno */
+    border: none; /* sem borda */
+    border-radius: 8px; /* cantos arredondados */
+    cursor: pointer; /* mãozinha ao passar o mouse */
+    font-weight: bold; /* texto em negrito */
+    background: #e9ecef; /* cinza claro (botões sem a classe primary) */
+    color: var(--text); /* texto escuro */
+    transition: background 0.2s; /* anima a troca de cor */
+}
+
+/* ===== BOTÃO PRINCIPAL (azul) ===== */
+.btn.primary {
+    background: var(--primary); /* fundo azul */
+    color: white; /* texto branco */
+}
+
+/* Botão principal ao passar o mouse */
+.btn.primary:hover {
+    background: var(--primary-dark); /* azul mais escuro */
+}
+
+/* ===== MENSAGEM DE ERRO ===== */
+.error-msg {
+    color: var(--danger); /* texto vermelho */
+    background: #fdecee; /* fundo rosa clarinho */
+    padding: 0.5rem 0.7rem; /* espaço interno */
+    border-radius: 6px; /* cantos arredondados */
+    font-size: 0.85rem; /* texto menor */
+}
+
+/* ===== RODAPÉ DA PÁGINA ===== */
+.footer {
+    text-align: center; /* texto centralizado */
+    padding: 1rem; /* espaço interno */
+    background: #e9ecef; /* cinza claro */
+    border-top: 1px solid var(--border); /* linha fina no topo */
+}
+
+/* ===== PERFIL DO USUÁRIO ===== */
+
+/* Elemento clicável (nome do autor) */
+.clickable {
+    cursor: pointer; /* mãozinha ao passar o mouse */
+}
+
+/* Efeito ao passar o mouse sobre o elemento clicável */
+.clickable:hover {
+    text-decoration: underline; /* sublinha o texto */
+}
+
+/* Caixa do perfil */
+.profile-content {
+    max-height: 85vh; /* altura máxima = 85% da tela */
+    overflow-y: auto; /* se passar do limite, aparece barra de rolagem vertical */
+}
+
+/* Parte de cima do perfil (foto, nome, @) */
+.profile-top {
+    text-align: center; /* tudo centralizado */
+    margin-bottom: 1rem; /* espaço embaixo */
+}
+
+/* Foto do perfil */
+.profile-photo {
+    width: 96px; /* largura da foto */
+    height: 96px; /* altura da foto (igual à largura = quadrado) */
+    border-radius: 50%; /* 50% transforma o quadrado em círculo */
+    object-fit: cover; /* corta a foto para preencher sem esticar */
+    margin-bottom: 0.5rem; /* espaço embaixo */
+}
+
+/* Faixa com as estatísticas (publicações e curtidas) */
+.profile-stats {
+    display: flex; /* itens lado a lado */
+    justify-content: space-around; /* espalha com espaço igual ao redor */
+    margin-bottom: 1rem; /* espaço embaixo */
+    padding: 0.8rem 0; /* espaço interno em cima e embaixo */
+    border-top: 1px solid var(--border); /* linha fina em cima */
+    border-bottom: 1px solid var(--border); /* linha fina embaixo */
+}
+
+/* Cada estatística (número em cima, texto embaixo) */
+.profile-stats div {
+    display: flex; /* organiza número e texto com flexbox */
+    flex-direction: column; /* um embaixo do outro */
+    align-items: center; /* centraliza na horizontal */
+}
+
+/* Número da estatística */
+.profile-stats strong {
+    font-size: 1.3rem; /* número maior */
+}
+
+/* Texto da estatística (ex.: "Publicações") */
+.profile-stats span {
+    font-size: 0.8rem; /* texto pequeno */
+    color: #777; /* cinza */
+}
+
+/* ===== ÍCONES: fechar.svg e curtir.svg são brancos, por isso ficam sobre fundo colorido ===== */
+
+/* Botão redondo de fechar (usado no perfil e no login) */
+.profile-close {
+    position: absolute; /* posicionado em relação à caixa branca (.modal-content) */
+    top: 10px; /* 10px abaixo do topo */
+    right: 10px; /* 10px da direita */
+    width: 30px; /* largura do botão */
+    height: 30px; /* altura do botão (igual à largura = círculo) */
+    border: none; /* sem borda */
+    border-radius: 50%; /* círculo */
+    background: var(--primary); /* fundo azul para o ícone branco aparecer */
+    cursor: pointer; /* mãozinha ao passar o mouse */
+    display: flex; /* usa flexbox para centralizar o ícone */
+    align-items: center; /* centraliza na vertical */
+    justify-content: center; /* centraliza na horizontal */
+    transition: background 0.2s; /* anima a troca de cor */
+}
+
+/* Botão de fechar ao passar o mouse */
+.profile-close:hover {
+    background: var(--primary-dark); /* azul mais escuro */
+}
+
+/* Tamanho do ícone de fechar */
+.icon-close {
+    width: 12px; /* largura do ícone */
+    height: 12px; /* altura do ícone */
+}
+
+/* Contador de curtidas no perfil (pílula vermelha) */
+.like-count {
+    display: inline-flex; /* ícone e número lado a lado */
+    align-items: center; /* alinha no meio */
+    gap: 0.4rem; /* espaço entre ícone e número */
+    background: var(--danger); /* fundo vermelho para o ícone branco aparecer */
+    color: white; /* número branco */
+    padding: 0.2rem 0.6rem; /* espaço interno */
+    border-radius: 12px; /* formato de pílula */
+    font-size: 0.9rem; /* tamanho do número */
+}
+
+/* Tamanho do ícone de curtir (feed e perfil) */
+.icon-like {
+    width: 14px; /* largura do ícone */
+    height: 14px; /* altura do ícone */
+}
