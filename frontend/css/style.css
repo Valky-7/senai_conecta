@@ -24,8 +24,9 @@ body { background-color: var(--background); color: var(--text); display: flex; f
 .post-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 6px; margin: 0.5rem 0; }
 .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
 
-.like-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #666; }
-.like-btn.liked { color: var(--danger); }
+/* Botao de curtir: cinza quando nao curtiu, vermelho quando curtiu (o icone e branco) */
+.like-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #aaa; border: none; border-radius: 12px; padding: 0.2rem 0.7rem; cursor: pointer; font-size: 0.95rem; color: white; }
+.like-btn.liked { background: var(--danger); }
 
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
 .modal.hidden, .hidden { display: none !important; }
@@ -39,3 +40,22 @@ body { background-color: var(--background); color: var(--text); display: flex; f
 .error-msg { color: var(--danger); font-size: 0.85rem; }
 
 .footer { text-align: center; padding: 1rem; background: #e9ecef; border-top: 1px solid var(--border); }
+
+/* ===== Perfil do usuario ===== */
+.clickable { cursor: pointer; }
+.clickable:hover { text-decoration: underline; }
+
+.profile-content { max-height: 85vh; overflow-y: auto; }
+.profile-top { text-align: center; margin-bottom: 1rem; }
+.profile-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin-bottom: 0.5rem; }
+
+.profile-stats { display: flex; justify-content: space-around; margin-bottom: 1rem; padding: 0.8rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.profile-stats div { display: flex; flex-direction: column; align-items: center; }
+.profile-stats strong { font-size: 1.3rem; }
+.profile-stats span { font-size: 0.8rem; color: #777; }
+
+/* Os icones fechar.svg e curtir.svg sao brancos, entao precisam de fundo colorido */
+.profile-close { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border: none; border-radius: 50%; background: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.icon-close { width: 12px; height: 12px; }
+.like-count { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--danger); color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem; }
+.icon-like { width: 14px; height: 14px; }

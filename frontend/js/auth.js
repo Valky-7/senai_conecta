@@ -6,7 +6,7 @@ function checkAuth() {
 
     if (token && user) {
         userMenu.innerHTML = `
-            <span>@${user.username}</span>
+            <button class="btn" data-username="${escapeHtml(user.username)}" onclick="openProfile(this.dataset.username)">@${escapeHtml(user.username)}</button>
             <button class="btn" onclick="logout()">Sair</button>
         `;
         if (user.tipo_perfil === 'criador') {

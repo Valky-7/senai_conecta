@@ -37,7 +37,10 @@
     <!-- Modal de Autenticação -->
     <div id="authModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <!-- Botao de fechar usando o icone fechar.svg (mesmo estilo do perfil) -->
+            <button class="profile-close" onclick="closeAuthModal()">
+                <img src="../backend/uploads/fechar.svg" class="icon-close">
+            </button>
             <div class="tabs">
                 <button id="tabLogin" class="tab-btn active" onclick="switchTab('login')">Login</button>
                 <button id="tabRegister" class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
@@ -61,6 +64,11 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal do Perfil (o conteudo e preenchido pelo JS) -->
+     <div id="profileModal" class="modal hidden">
+        <div class="modal-content profile-content" id="profileContent"></div>
+     </div>
 
     <footer class="footer">
         <p>&copy; 2026-2027 SENAI Conecta</p>

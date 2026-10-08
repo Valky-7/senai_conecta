@@ -1,6 +1,6 @@
 <?php
 class JWTHelper {
-    private static string $secret = "SENAI_CONECTA_CHAVE_SECRETA_2026";
+    private static string $secret = "SENAI_CONECTA_KAUAN_O_MAIOR_DO_PLANETA";
 
     public static function encode(array $payload): string {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);

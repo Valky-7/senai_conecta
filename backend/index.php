@@ -128,6 +128,49 @@ if ($uri === '/publicacoes' && $method === 'GET') {
     exit;
 }
 
+// ROUTE: GET /usuarios/{username}  (ver perfil de um usuario)
+if (preg_match('/^\/usuarios\/([\w.]+)$/', $uri, $matches) && $method === 'GET') {
+    // Pega o username que veio na URL
+    $username = $matches[1];
+
+    // Busca os dados do usuario e conta as publicacoes e as curtidas recebidas
+    $stmt = $db->prepare("
+        SELECT u.id_usuario, u.nome, u.username, u.foto,
+            (SELECT COUNT(*) FROM publicacao WHERE id_usuario = u.id_usuario) AS total_publicacoes,
+            (SELECT COUNT(*) FROM curtida c
+                JOIN publicacao p ON c.id_publicacao = p.id_publicacao
+                WHERE p.id_usuario = u.id_usuario) AS total_curtidas_recebidas
+        FROM usuario u
+        WHERE u.username = ?
+    ");
+    $stmt->execute([$username]);
+    $perfil = $stmt->fetch();
+
+    // Se nao achou o usuario, devolve erro 404
+    if (!$perfil) {
+        http_response_code(404);
+        echo json_encode(["erro" => "Usuário não encontrado."]);
+        exit;
+    }
+
+    // Busca as publicacoes desse usuario, da mais nova para a mais antiga
+    $stmt = $db->prepare("
+        SELECT p.id_publicacao, p.texto, p.imagem, p.datahora_publicacao,
+            COUNT(c.id_curtida) AS total_curtidas
+        FROM publicacao p
+        LEFT JOIN curtida c ON p.id_publicacao = c.id_publicacao
+        WHERE p.id_usuario = ?
+        GROUP BY p.id_publicacao
+        ORDER BY p.datahora_publicacao DESC
+    ");
+    $stmt->execute([$perfil['id_usuario']]);
+
+    // Coloca a lista de publicacoes dentro do perfil e devolve tudo em JSON
+    $perfil['publicacoes'] = $stmt->fetchAll();
+    echo json_encode($perfil);
+    exit;
+}
+
 // ROUTE: POST /publicacoes
 if ($uri === '/publicacoes' && $method === 'POST') {
     $user = getAuthenticatedUser();
